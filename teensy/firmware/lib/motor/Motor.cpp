@@ -4,7 +4,7 @@ Controller::Controller(driver motor_driver, int pwm_pin, int motor_pinA, int mot
     motor_driver_(motor_driver),
     pwm_pin_(pwm_pin),
     motor_pinA_(motor_pinA),
-    motor_pinB_(motor_pinB)
+    motor_pinB_(motor_pinB)//四个成员变量初始化
 {
     switch (motor_driver)
     {

@@ -25,20 +25,46 @@
   POSSIBILITY OF SUCH DAMAGE.
 */
 
+
+/*
+\                /
+\motor1    motor2/
+\                /
+      x+ ^
+         |
+ y+<———— |
+/                \
+/motor3    motor4\
+/                \
+y轴移动
+v1=-vy
+v2=vy
+v3=vy
+v4=-vy
+*/
+
 #include "Arduino.h"
 #include "Kinematics.h"
-
+/**
+ * @brief Construct a new Kinematics:: Kinematics object
+ * 
+ * @param robot_base 底盘类型
+ * @param motor_max_rpm 电机最大转速
+ * @param wheel_diameter 轮直径
+ * @param wheels_x_distance 轮距
+ * @param wheels_y_distance  轴距
+ */
 Kinematics::Kinematics(base robot_base, int motor_max_rpm, float wheel_diameter, 
 float wheels_x_distance, float wheels_y_distance):
     base_platform(robot_base),
     max_rpm_(motor_max_rpm),
-    wheels_x_distance_(base_platform == DIFFERENTIAL_DRIVE ? 0 : wheels_x_distance),
+    wheels_x_distance_(base_platform == DIFFERENTIAL_DRIVE ? 0 : wheels_x_distance),//如果是差速就是0
     wheels_y_distance_(wheels_y_distance),
     wheel_circumference_(PI * wheel_diameter),
     total_wheels_(getTotalWheels(robot_base))
 {    
 }
-
+//计算转速
 Kinematics::rpm Kinematics::calculateRPM(float linear_x, float linear_y, float angular_z)
 {
     float linear_vel_x_mins;
@@ -83,7 +109,7 @@ Kinematics::rpm Kinematics::calculateRPM(float linear_x, float linear_y, float a
 
     return rpm;
 }
-
+//获得转速
 Kinematics::rpm Kinematics::getRPM(float linear_x, float linear_y, float angular_z)
 {
     Kinematics::rpm rpm;
@@ -103,7 +129,7 @@ Kinematics::rpm Kinematics::getRPM(float linear_x, float linear_y, float angular
 
     return rpm;
 }
-
+//获得速度
 Kinematics::velocities Kinematics::getVelocities(float steering_angle, int rpm1, int rpm2)
 {
     Kinematics::velocities vel;
@@ -145,16 +171,16 @@ Kinematics::velocities Kinematics::getVelocities(int rpm1, int rpm2, int rpm3, i
 
     return vel;
 }
-
+//获得轮子数量
 int Kinematics::getTotalWheels(base robot_base)
 {
     switch(robot_base)
     {
-        case DIFFERENTIAL_DRIVE:    return 2;
-        case ACKERMANN:             return 2;
-        case ACKERMANN1:            return 1;
-        case SKID_STEER:            return 4;
-        case MECANUM:               return 4;
-        default:                    return 2;
+        case DIFFERENTIAL_DRIVE:    return 2;//差速
+        case ACKERMANN:             return 2;//双电机
+        case ACKERMANN1:            return 1;//差速器分配 
+        case SKID_STEER:            return 4;//四轮滑移
+        case MECANUM:               return 4;//麦克纳姆
+        default:                    return 2;//默认
     }
 }

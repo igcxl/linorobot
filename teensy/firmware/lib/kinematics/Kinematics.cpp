@@ -51,8 +51,8 @@ v4=-vy
  * @param robot_base 底盘类型
  * @param motor_max_rpm 电机最大转速
  * @param wheel_diameter 轮直径
- * @param wheels_x_distance 轮距
- * @param wheels_y_distance  轴距
+ * @param wheels_x_distance 轮距？
+ * @param wheels_y_distance  轴距？
  */
 Kinematics::Kinematics(base robot_base, int motor_max_rpm, float wheel_diameter, 
 float wheels_x_distance, float wheels_y_distance):
